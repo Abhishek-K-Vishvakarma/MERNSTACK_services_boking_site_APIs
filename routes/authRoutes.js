@@ -65,4 +65,11 @@ router.post('/notify', notifyPost);
 router.get('/getnotify/:id', notifyGet);
 router.delete('/delnotify/:id', notifyDel)
 // router.post("/subimage/:id", upload.single("logo"), subcategoryImage);
+
+
+router.get("/ping", (req, res) => {
+  res.json({ message: "Backend is working!" });
+  console.log("Backend is working!");
+});
+
 module.exports = router;
