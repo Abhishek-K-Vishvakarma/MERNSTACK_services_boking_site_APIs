@@ -105,26 +105,26 @@ import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
 import serverless from "serverless-http";
-import authroutes from "./routes/authRoutes.js";
+import authroutes from "./routes/authRoutes.js"; // adjust if needed
 
 const app = express();
 
-// Support __dirname in ES modules
+// Handle __dirname and __filename in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
+// Static file serving (e.g. uploaded images)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // MongoDB connection
 const MONGO_URI = process.env.MONGO_URI;
 if (!MONGO_URI) {
-  console.error("❌ MONGO_URI not defined in .env file");
+  console.error("❌ MONGO_URI not defined in environment variables");
   process.exit(1);
 }
 
@@ -133,18 +133,16 @@ mongoose
   .then(() => console.log("✅ MongoDB connected!"))
   .catch((err) => console.error("❌ DB connection error:", err));
 
-// API Routes
+// Routes
 app.use("/api", authroutes);
 
-
-
-// Export serverless handler for Vercel
+// Export for Vercel serverless
 export const handler = serverless(app);
 
-// Local development support
+// Optional: Run locally
 if (process.env.LOCAL === "true") {
   const PORT = process.env.PORT || 7207;
   app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    console.log(`🚀 Server running at http://localhost:${ PORT }`);
   });
 }

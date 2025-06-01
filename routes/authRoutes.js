@@ -67,9 +67,9 @@ router.delete('/delnotify/:id', notifyDel)
 // router.post("/subimage/:id", upload.single("logo"), subcategoryImage);
 
 
-router.get("/ping", (req, res) => {
-  res.json({ message: "Backend is working!" });
-  console.log("Backend is working!");
+router.get("/test", (req, res) => {
+  res.json({ message: "API is working ✅" });
 });
+
 
 module.exports = router;
