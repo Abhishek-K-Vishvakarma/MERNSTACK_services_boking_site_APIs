@@ -102,24 +102,15 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import path from "path";
-import { fileURLToPath } from "url";
 import serverless from "serverless-http";
-import authroutes from "./routes/authRoutes.js"; // adjust if needed
+import authroutes from "./routes/authRoutes.js"; // Adjust the path if needed
 
 const app = express();
-
-// Handle __dirname and __filename in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Static file serving (e.g. uploaded images)
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // MongoDB connection
 const MONGO_URI = process.env.MONGO_URI;
@@ -129,20 +120,23 @@ if (!MONGO_URI) {
 }
 
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("✅ MongoDB connected!"))
-  .catch((err) => console.error("❌ DB connection error:", err));
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // Routes
 app.use("/api", authroutes);
 
-// Export for Vercel serverless
+// Export for Vercel
 export const handler = serverless(app);
 
-// Optional: Run locally
+// Optional: Local dev mode
 if (process.env.LOCAL === "true") {
   const PORT = process.env.PORT || 7207;
   app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${ PORT }`);
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
   });
 }
