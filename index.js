@@ -57,38 +57,38 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 
-// const express = require("express");
-// const cors = require("cors");
-// const mongoose = require("mongoose");
-// const path = require("path");
-// const authroutes = require('./routes/authRoutes');
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const path = require("path");
+const authroutes = require('./routes/authRoutes');
 
-// const app = express();
-// const PORT = 7207;
+const app = express();
+const PORT = 7207;
 
-// // Middleware
-// app.use(express.json());
-// app.use(cors());
-// app.use(express.urlencoded({ extended: true })); // Parses application/x-www-form-urlencoded
+// Middleware
+app.use(express.json());
+app.use(cors());
+app.use(express.urlencoded({ extended: true })); // Parses application/x-www-form-urlencoded
 
-// // Connect to MongoDB
-// mongoose.connect("mongodb://localhost:27017/usersdb", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// })
-//   .then(() => console.log("✅ MongoDB database connected!"))
-//   .catch(err => console.error("❌ Database connection error!", err));
+// Connect to MongoDB
+mongoose.connect("mongodb://localhost:27017/usersdb", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log("✅ MongoDB database connected!"))
+  .catch(err => console.error("❌ Database connection error!", err));
 
-// // Serve static uploads folder
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Serve static uploads folder
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// // Routes
-// app.use("/api", authroutes);
+// Routes
+app.use("/api", authroutes);
 
-// // Start Server
-// app.listen(PORT, () => {
-//   console.log(`🚀 Server running at: http://localhost:${PORT}`);
-// });
+// Start Server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running at: http://localhost:${PORT}`);
+});
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -96,47 +96,47 @@
 
 // Load environment variables from .env
 // Load .env variables
-import dotenv from "dotenv";
-dotenv.config();
+// import dotenv from "dotenv";
+// dotenv.config();
 
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-import serverless from "serverless-http";
-import authroutes from "./routes/authRoutes.js"; // Adjust the path if needed
+// import express from "express";
+// import cors from "cors";
+// import mongoose from "mongoose";
+// import serverless from "serverless-http";
+// import authroutes from "./routes/authRoutes.js"; // Adjust the path if needed
 
-const app = express();
+// const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// // Middleware
+// app.use(cors());
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
-// MongoDB connection
-const MONGO_URI = process.env.MONGO_URI;
-if (!MONGO_URI) {
-  console.error("❌ MONGO_URI not defined in environment variables");
-  process.exit(1);
-}
+// // MongoDB connection
+// const MONGO_URI = process.env.MONGO_URI;
+// if (!MONGO_URI) {
+//   console.error("❌ MONGO_URI not defined in environment variables");
+//   process.exit(1);
+// }
 
-mongoose
-  .connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB connected!"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+// mongoose
+//   .connect(MONGO_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("✅ MongoDB connected!"))
+//   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// Routes
-app.use("/api", authroutes);
+// // Routes
+// app.use("/api", authroutes);
 
-// Export for Vercel
-export const handler = serverless(app);
+// // Export for Vercel
+// export const handler = serverless(app);
 
-// Optional: Local dev mode
-if (process.env.LOCAL === "true") {
-  const PORT = process.env.PORT || 7207;
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
-  });
-}
+// // Optional: Local dev mode
+// if (process.env.LOCAL === "true") {
+//   const PORT = process.env.PORT || 7207;
+//   app.listen(PORT, () => {
+//     console.log(`🚀 Server running at http://localhost:${PORT}`);
+//   });
+// }
